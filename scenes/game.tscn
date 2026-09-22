@@ -1,0 +1,118 @@
+[gd_scene format=3 uid="uid://ch21vivq3v4ru"]
+
+[ext_resource type="Script" uid="uid://5loflqj8gtoy" path="res://scripts/main_game.gd" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://c5pnmhvhwi2qo" path="res://scenes/player.tscn" id="2_lnu2h"]
+
+[sub_resource type="Curve2D" id="Curve2D_yqjtg"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -34.002373, 29.000004, 0, 0, 0, 0, 1227, 29, 0, 0, 0, 0, 1228, 831, 0, 0, 0, 0, -35.001583, 831.9951, 0, 0, 0, 0, -34, 31)
+}
+point_count = 5
+
+[sub_resource type="FontFile" id="FontFile_heu4d"]
+cache/0/variation_coordinates = {}
+cache/0/face_index = 0
+cache/0/embolden = 0.0
+cache/0/transform = Transform2D(1, 0, 0, 1, 0, 0)
+cache/0/spacing_top = 0
+cache/0/spacing_bottom = 0
+cache/0/spacing_space = 0
+cache/0/spacing_glyph = 0
+cache/0/baseline_offset = 0.0
+cache/0/16/0/ascent = 0.0
+cache/0/16/0/descent = 0.0
+cache/0/16/0/underline_position = 0.0
+cache/0/16/0/underline_thickness = 0.0
+cache/0/16/0/scale = 1.0
+cache/0/66/0/ascent = 0.0
+cache/0/66/0/descent = 0.0
+cache/0/66/0/underline_position = 0.0
+cache/0/66/0/underline_thickness = 0.0
+cache/0/66/0/scale = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qoujy"]
+bg_color = Color(0.34937227, 0.6507923, 0.72504276, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w3m3u"]
+
+[node name="Game" type="Node2D" unique_id=1326567400]
+script = ExtResource("1_lnu2h")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1274901321]
+layer = -30
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=851405620]
+offset_left = -1375.0
+offset_top = -781.0
+offset_right = 2558.0
+offset_bottom = 1479.0
+
+[node name="Player" parent="." unique_id=304929526 instance=ExtResource("2_lnu2h")]
+z_index = 1
+position = Vector2(594, 423)
+
+[node name="Path2D" type="Path2D" parent="Player" unique_id=1218752645]
+position = Vector2(-594.97076, -423.14465)
+scale = Vector2(1.0007905, 1.0049875)
+curve = SubResource("Curve2D_yqjtg")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Player/Path2D" unique_id=480338800]
+unique_name_in_owner = true
+position = Vector2(-34.002373, 29.000004)
+
+[node name="Timer" type="Timer" parent="." unique_id=460676237]
+wait_time = 0.3
+autostart = true
+
+[node name="You died" type="CanvasLayer" parent="." unique_id=1184218615]
+unique_name_in_owner = true
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="You died" unique_id=1774195542]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5176471)
+
+[node name="Label" type="Label" parent="You died/ColorRect" unique_id=432499159]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -34.5
+offset_top = -11.5
+offset_right = 34.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("FontFile_heu4d")
+theme_override_font_sizes/font_size = 66
+text = "You Died
+Game Over"
+horizontal_alignment = 1
+
+[node name="Restart" type="Button" parent="You died" unique_id=1011781066]
+process_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -77.0
+offset_top = 144.0
+offset_right = 97.0
+offset_bottom = 181.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_qoujy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_w3m3u")
+action_mode = 0
+text = "RESTART"
+
+[connection signal="Player_dead" from="Player" to="." method="_on_player_player_dead"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="You died/Restart" to="." method="_on_restart_pressed"]
